@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pawthway • Draft Visual</title>
+  <style>
+    :root{
+      --bg:#0b1220;         /* deep navy */
+      --panel:#101827;      /* slate */
+      --muted:#9aa5b1;      /* grey text */
+      --text:#e7ecf2;       /* near white */
+      --brand:#22c55e;      /* green */
+      --brand2:#06b6d4;     /* cyan */
+      --accent:#f59e0b;     /* amber */
+      --danger:#ef4444;     /* red */
+      --ring:0 0 0 3px rgba(34,197,94,.25);
+      --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,rgba(6,182,212,.15),transparent),radial-gradient(1000px 500px at 120% 20%,rgba(34,197,94,.12),transparent),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1200px,92%);margin-inline:auto}
+    .chip{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px;color:var(--muted)}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:50;background:rgba(16,24,39,.8);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:800}
+    .logo{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:conic-gradient(from 180deg,var(--brand),var(--brand2));box-shadow:var(--shadow)}
+    .logo svg{filter:drop-shadow(0 6px 12px rgba(0,0,0,.4))}
+    .menu{display:flex;gap:8px;flex-wrap:wrap}
+    .menu a{padding:10px 12px;border-radius:12px;color:var(--muted);border:1px solid transparent}
+    .menu a.active,.menu a:hover{color:#fff;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.10)}
+    .actions{display:flex;gap:10px}
+    .btn{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600}
+    .btn:hover{background:rgba(255,255,255,.08)}
+    .btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));border:none}
+
+    /* Hero */
+    .hero{padding:40px 0 24px}
+    .hero .wrap{display:grid;gap:16px}
+    .hero h1{font-size:clamp(28px,4vw,42px);margin:0}
+    .hero p{color:var(--muted);max-width:65ch;margin:0}
+    .quick-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:10px}
+    .quick{display:flex;gap:8px;align-items:center;justify-content:center;background:rgba(255,255,255,.04);padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.08);cursor:pointer}
+    .quick:hover{background:rgba(255,255,255,.07)}
+
+    /* Sections */
+    main section{padding:24px 0;display:none}
+    main section.active{display:block}
+    h2{margin:4px 0 14px;font-size:22px}
+
+    .grid{display:grid;gap:14px}
+    .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media (max-width:900px){.cols-3{grid-template-columns:1fr 1fr}}
+    @media (max-width:640px){.cols-3,.cols-2{grid-template-columns:1fr}}
+
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .card .content{padding:16px}
+    .card .title{font-weight:700}
+    .muted{color:var(--muted)}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);font-size:12px;color:var(--muted)}
+
+    .thumb{height:140px;border-top-left-radius:var(--radius);border-top-right-radius:var(--radius);background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(6,182,212,.2));display:grid;place-items:center}
+    .thumb .dog{width:48px;height:48px}
+
+    form{display:grid;gap:10px}
+    input, select, textarea{background:#0b1426;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 12px;color:#fff}
+    textarea{min-height:90px}
+    .row{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+    @media (max-width:640px){.row{grid-template-columns:1fr}}
+
+    .inline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .kpi{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+
+    /* Toast */
+    .toast{position:fixed;right:16px;bottom:16px;padding:12px 14px;border-radius:12px;background:#0b1426;border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);display:none}
+
+    /* Footer */
+    footer{padding:40px 0;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12c2 0 3-2 5-2s3 2 5 2 3-2 5-2" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="8" cy="6.5" r="2" fill="white"/>
+          </svg>
+        </div>
+        <span>Pawthway</span>
+        <span class="chip">draft preview</span>
+      </div>
+      <nav class="menu" id="menu">
+        <a href="#" data-section="home" class="active">Home</a>
+        <a href="#" data-section="rescue">Rescue</a>
+        <a href="#" data-section="adopt">Adopt</a>
+        <a href="#" data-section="donate">Donate</a>
+        <a href="#" data-section="abuse">Report Abuse</a>
+        <a href="#" data-section="learn">Learn</a>
+        <a href="#" data-section="lost">Lost & Found</a>
+        <a href="#" data-section="community">Community</a>
+      </nav>
+      <div class="actions">
+        <button class="btn" onclick="demoLogin('ngo')">NGO Login</button>
+        <button class="btn primary" onclick="demoLogin('user')">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container wrap">
+      <span class="pill">Adopt • Rescue • Love</span>
+      <h1>Connect rescuers, NGOs & adopters — faster.</h1>
+      <p>Report injured/stray animals, adopt verified pets, sponsor care, track abuse cases, and grow a kinder community. This is a visual draft to show the user journey and layout ideas.</p>
+      <div class="quick-grid">
+        <div class="quick" data-section="rescue">🐾 Report Rescue</div>
+        <div class="quick" data-section="adopt">🏠 Adopt a Pet</div>
+        <div class="quick" data-section="donate">💚 Donate / Sponsor</div>
+        <div class="quick" data-section="abuse">🚨 Report Abuse</div>
+        <div class="quick" data-section="learn">🎓 Learn</div>
+        <div class="quick" data-section="lost">🔎 Lost & Found</div>
+      </div>
+      <div class="inline">
+        <div class="kpi">📍 Auto Geo-tag Enabled</div>
+        <div class="kpi">🔔 Instant NGO Alerts</div>
+        <div class="kpi">🩺 Verified Health Records</div>
+        <div class="kpi">🏅 Donor Badges</div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <!-- HOME OVERVIEW -->
+    <section id="home" class="active">
+      <h2>Overview</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <div class="thumb" aria-hidden="true">🐶</div>
+          <div class="content">
+            <div class="title">Rescue Pathway</div>
+            <p class="muted">Report, notify nearby NGOs/volunteers, move to care, create a pet profile.</p>
+            <button class="btn" data-section="rescue">Open</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="thumb">🐱</div>
+          <div class="content">
+            <div class="title">Adoption Pathway</div>
+            <p class="muted">Browse profiles, apply, verification, finalize, and post success stories.</p>
+            <button class="btn" data-section="adopt">Open</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="thumb">💚</div>
+          <div class="content">
+            <div class="title">Donation & Sponsorship</div>
+            <p class="muted">One-time, monthly, or sponsor medical/food with transparent updates.</p>
+            <button class="btn" data-section="donate">Open</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESCUE -->
+    <section id="rescue">
+      <h2>Report a Rescue</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <div class="content">
+            <form id="rescueForm">
+              <div class="row">
+                <input type="text" placeholder="Animal type (Dog, Cat...)" required />
+                <input type="text" placeholder="Condition (injury, dehydration...)" required />
+              </div>
+              <textarea placeholder="Short description" required></textarea>
+              <div class="row">
+                <input type="file" accept="image/*" />
+                <input type="text" id="geo" placeholder="Geo-tag (auto)" />
+              </div>
+              <button class="btn primary" type="submit">Submit Rescue</button>
+            </form>
+          </div>
+        </div>
+        <div class="card">
+          <div class="content">
+            <div class="title">Nearby NGOs & Volunteers</div>
+            <p class="muted">Auto-notified based on location. (Demo list)</p>
+            <ul>
+              <li>Hope Paws NGO • 2.1 km</li>
+              <li>Care Tails Volunteers • 3.4 km</li>
+              <li>City Vet Network • 4.0 km</li>
+            </ul>
+            <div class="title" style="margin-top:12px;">Status Timeline</div>
+            <p class="muted">Reported → Accepted → In Transit → At Shelter → Profile Published</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADOPT -->
+    <section id="adopt">
+      <h2>Adopt a Pet</h2>
+      <div class="grid cols-3" id="petGrid">
+        <!-- Pet Cards (demo) -->
+        <div class="card">
+          <div class="thumb">🐕</div>
+          <div class="content">
+            <div class="title">Bruno • 2 yrs</div>
+            <p class="muted">Vaccinated • Friendly • Bengaluru</p>
+            <button class="btn" onclick="openApply('Bruno')">Apply</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="thumb">🐈</div>
+          <div class="content">
+            <div class="title">Misty • 8 mo</div>
+            <p class="muted">Spayed • Calm • Mysuru</p>
+            <button class="btn" onclick="openApply('Misty')">Apply</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="thumb">🦮</div>
+          <div class="content">
+            <div class="title">Rocky • 3 yrs</div>
+            <p class="muted">Vaccinated • Active • Pune</p>
+            <button class="btn" onclick="openApply('Rocky')">Apply</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DONATE -->
+    <section id="donate">
+      <h2>Donate & Sponsor</h2>
+      <div class="grid cols-3">
+        <div class="card"><div class="content"><div class="title">One-time</div><p class="muted">Support rescues instantly.</p><button class="btn primary" onclick="mockPay('One-time')">Donate</button></div></div>
+        <div class="card"><div class="content"><div class="title">Sponsor a Pet</div><p class="muted">Cover food/medical bills.</p><button class="btn primary" onclick="mockPay('Sponsor')">Sponsor</button></div></div>
+        <div class="card"><div class="content"><div class="title">Monthly</div><p class="muted">Sustain shelters every month.</p><button class="btn primary" onclick="mockPay('Monthly')">Subscribe</button></div></div>
+      </div>
+      <div class="card" style="margin-top:14px"><div class="content"><div class="title">Transparency</div><p class="muted">NGOs upload receipts & pet progress reports. Donors earn badges/certificates.</p></div></div>
+    </section>
+
+    <!-- ABUSE REPORTING -->
+    <section id="abuse">
+      <h2>Report Abuse</h2>
+      <div class="grid cols-2">
+        <div class="card"><div class="content">
+          <form id="abuseForm">
+            <textarea placeholder="Describe the incident" required></textarea>
+            <div class="row">
+              <input type="file" accept="image/*,video/*" />
+              <input type="text" placeholder="Location / Geo-tag" />
+            </div>
+            <select>
+              <option>Connect to Legal NGO</option>
+              <option>Notify Authorities</option>
+            </select>
+            <button class="btn primary" type="submit">Submit Case</button>
+          </form>
+        </div></div>
+        <div class="card"><div class="content">
+          <div class="title">Case Tracking</div>
+          <p class="muted">Reported → Under Investigation → Action Taken</p>
+          <ul>
+            <li>#A-1042 • Under Investigation</li>
+            <li>#A-1036 • Action Taken</li>
+          </ul>
+          <button class="btn">View Petitions</button>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- LEARN -->
+    <section id="learn">
+      <h2>Awareness & Education</h2>
+      <div class="grid cols-3">
+        <div class="card"><div class="content"><div class="title">Adopt, Don’t Shop</div><p class="muted">Why adoption matters and how you can help.</p><button class="btn">Read</button></div></div>
+        <div class="card"><div class="content"><div class="title">Vaccination Reminders</div><p class="muted">Keep pets safe with timely shots.</p><button class="btn">Set Reminders</button></div></div>
+        <div class="card"><div class="content"><div class="title">Pet Parenting Tips</div><p class="muted">Training, nutrition, and care basics.</p><button class="btn">Explore</button></div></div>
+      </div>
+    </section>
+
+    <!-- LOST & FOUND -->
+    <section id="lost">
+      <h2>Lost & Found</h2>
+      <div class="grid cols-2">
+        <div class="card"><div class="content">
+          <form id="lostForm">
+            <input type="text" placeholder="Pet Name" required />
+            <div class="row">
+              <input type="text" placeholder="Breed/Color" required />
+              <input type="text" placeholder="Last seen area" required />
+            </div>
+            <input type="file" accept="image/*" />
+            <button class="btn primary" type="submit">Post Lost Pet</button>
+          </form>
+        </div></div>
+        <div class="card"><div class="content">
+          <div class="title">Matches Near You</div>
+          <p class="muted">Geo-based matching to reunite families.</p>
+          <ul>
+            <li>Golden retriever • Hebbal • 1.2 km</li>
+            <li>Tabby cat • Yelahanka • 2.9 km</li>
+          </ul>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section id="community">
+      <h2>Community & Engagement</h2>
+      <div class="grid cols-3">
+        <div class="card"><div class="content"><div class="title">Volunteer Portal</div><p class="muted">Sign up, track rescues, earn points.</p><button class="btn">Join</button></div></div>
+        <div class="card"><div class="content"><div class="title">Leaderboard</div><p class="muted">Badges & recognition for impact.</p><button class="btn">View</button></div></div>
+        <div class="card"><div class="content"><div class="title">Success Stories Wall</div><p class="muted">See recent adoptions and rescues.</p><button class="btn">Open</button></div></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Saved!</div>
+
+  <footer>
+    <div class="container">
+      <div class="inline"><span class="pill">prototype</span><span class="pill">no backend</span><span class="pill">for presentation</span></div>
+      <p class="muted">© Pawthway Draft • For demo purposes only.</p>
+    </div>
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll('main section, section.hero');
+    const menu = document.getElementById('menu');
+    const toast = document.getElementById('toast');
+
+    function show(section){
+      document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
+      const el = document.getElementById(section) || document.getElementById('home');
+      el.classList.add('active');
+      menu.querySelectorAll('a').forEach(a=>a.classList.toggle('active', a.dataset.section===section));
+      const y = document.querySelector('header').offsetHeight;
+      window.scrollTo({top:y,behavior:'smooth'});
+    }
+
+    // menu links
+    menu.addEventListener('click', (e)=>{
+      if(e.target.matches('a[data-section]')){
+        e.preventDefault();
+        show(e.target.dataset.section);
+      }
+    });
+
+    // quick actions/buttons
+    document.body.addEventListener('click', (e)=>{
+      const t = e.target.closest('[data-section]');
+      if(t){ show(t.dataset.section); }
+    });
+
+    function demoLogin(type){
+      pop(`Opening ${type==='ngo'?'NGO':'User'} login… (demo)`);
+    }
+
+    function openApply(name){
+      pop(`Adoption interest submitted for ${name} (demo)`);
+    }
+
+    function mockPay(kind){
+      pop(`${kind} contribution recorded (demo)`);
+    }
+
+    // forms demo handlers
+    ['rescueForm','abuseForm','lostForm'].forEach(id=>{
+      const f = document.getElementById(id);
+      if(f){ f.addEventListener('submit', e=>{ e.preventDefault(); pop('Submitted! (demo)'); }); }
+    });
+
+    // geotag filler for demo
+    const geo = document.getElementById('geo');
+    if(geo){ geo.value = 'Auto: 13.0351, 77.5970'; }
+
+    function pop(msg){
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      toast.style.opacity = '1';
+      setTimeout(()=>{ toast.style.opacity = '0'; }, 1600);
+      setTimeout(()=>{ toast.style.display = 'none'; }, 2000);
+    }
+  </script>
+</body>
+</html>
